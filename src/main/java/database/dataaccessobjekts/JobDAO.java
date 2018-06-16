@@ -40,7 +40,6 @@ public class JobDAO {
                 job.setName(rs.getString("job_name"));
                 job.setWorker(UserDAO.getUserByid(rs.getString("user_id_fk")));
                 jobList.add(job);
-                jobs.add(job);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,6 +58,7 @@ public class JobDAO {
                 e2.printStackTrace();
             }
         }
+        jobs = jobList;
         return jobList;
     }
 
@@ -120,8 +120,22 @@ public class JobDAO {
             pst.setString(8, job.getWorker().getUserId());
 
             pst.execute();
+            if (jobs != null) {
+                jobs.add(job);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally{
+            try {
+                if(pst!=null){
+                    pst.close();
+                }
+                if(con!=null){
+                    con.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
     }
 

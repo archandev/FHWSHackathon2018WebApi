@@ -2,6 +2,7 @@ package webapi;
 
 import bean.Job;
 import bean.User;
+import database.dataaccessobjekts.JobDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -42,7 +43,7 @@ public class JobService {
         job.setJobId(getNewJobId());
         job.setWorker(null);
 
-        jobCache.add(job);
+        JobDAO.insertJob(job);
 
         final URI locationURI = uriInfo.getAbsolutePathBuilder().path(job.getJobId()).build(new Object[0]);
         return Response.created(locationURI).build();
