@@ -98,7 +98,7 @@ public class RoomDAO {
     }
 
 
-    public static Room getRoomByid(String rid) {
+    public static Room getRoomById(String rid) {
         Connection con = DataAccess.getConnection();
         String sql = "select * from rooms p where p.room_id=?";
         PreparedStatement pst = null ;
