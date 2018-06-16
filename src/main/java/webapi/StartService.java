@@ -11,7 +11,7 @@ import java.util.*;
 
 @Path("")
 public class StartService {
-    private final List<User> userCache = new ArrayList<>();
+    final static List<User> userCache = new ArrayList<>();
 
     @Context
     private UriInfo uriInfo;
