@@ -40,7 +40,6 @@ public class JobDAO {
                 job.setName(rs.getString("job_name"));
                 job.setWorker(UserDAO.getUserByid(rs.getString("user_id_fk")));
                 jobList.add(job);
-                jobs.add(job);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,6 +58,7 @@ public class JobDAO {
                 e2.printStackTrace();
             }
         }
+        jobs = jobList;
         return jobList;
     }
 
@@ -102,7 +102,44 @@ public class JobDAO {
         return job;
     }
 
-    public void updateJob(Job job) {
+    public static void insertJob (Job job) {
+        Connection con = DataAccess.getConnection();
+        String sql = "insert into jobs (job_id, location, time, description, responsible_person, reward, job_name, user_id_fk" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);)";
+        PreparedStatement pst = null;
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, job.getJobId());
+            pst.setString(2, job.getLocation());
+            pst.setString(3, job.getDateTime());
+            pst.setString(4, job.getDescription());
+            pst.setString(5, job.getResponsiblePerson());
+            pst.setInt(6, job.getReward());
+            pst.setString(7, job.getName());
+            pst.setString(8, job.getWorker().getUserId());
+
+            pst.execute();
+            if (jobs != null) {
+                jobs.add(job);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                if(pst!=null){
+                    pst.close();
+                }
+                if(con!=null){
+                    con.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public static void updateJob(Job job) {
         Connection con = DataAccess.getConnection();
         String sql = "update jobs set job_id=?,location=?,time=?,description=?,responsible_person=?,reward=?,job_name=?,user_id_fk=? where job_id=?";
         PreparedStatement pst = null ;
@@ -113,9 +150,8 @@ public class JobDAO {
             pst.setString(3, job.getDateTime());
             pst.setString(4, job.getDescription());
             pst.setString(5, job.getResponsiblePerson());
-            pst.setInt(5, job.getReward());
-            pst.setString(5, job.getName());
-            pst.setString(6, job.getWorker().getUserId());
+            pst.setInt(6, job.getReward());
+            pst.setString(7, job.getName());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

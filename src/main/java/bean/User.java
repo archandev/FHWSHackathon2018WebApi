@@ -50,7 +50,7 @@ public class User {
         this.credit = credit;
     }
 
-    public boolean isSuperuser() {
+    public boolean getSuperuser() {
         return isSuperuser;
     }
 

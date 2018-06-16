@@ -8,8 +8,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-
     private static List<User> users = null;
+
+    public static void insertUser (User user) {
+        Connection con = DataAccess.getConnection();
+        String sql = "insert into usr (user_id, user_name, user_passwd, credit, is_super_user) " +
+                "VALUES (?, ?, ?, ?, ?);";
+        PreparedStatement pstm = null;
+
+        try {
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1, user.getUserId());
+            pstm.setString(2, user.getUserName());
+            pstm.setString(3, user.getUserPassword());
+            pstm.setInt(4, user.getCredit());
+            pstm.setBoolean(5, user.getSuperuser());
+            pstm.execute();
+
+            if (users != null)
+                users.add(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                if(pstm!=null){
+                    pstm.close();
+                }
+                if(con!=null){
+                    con.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 
     public static List<User> getAllUsers() {
         if (users != null){
@@ -139,7 +171,7 @@ public class UserDAO {
             pst.setString(2, pu.getUserName());
             pst.setString(3, pu.getUserPassword());
             pst.setInt(4, pu.getCredit());
-            pst.setBoolean(5, pu.isSuperuser());
+            pst.setBoolean(5, pu.getSuperuser());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -38,6 +38,8 @@ public class Application extends ResourceConfig
 		final Set<Class<?>> returnValue = new HashSet<>( );
 
 		returnValue.add(StartService.class);
+		returnValue.add(JobService.class);
+		returnValue.add(RegisterService.class);
 
 		return returnValue;
 	}
