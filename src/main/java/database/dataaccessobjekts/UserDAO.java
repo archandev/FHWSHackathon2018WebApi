@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class UserDAO {
 
-    public User getUserByid(String uid) {
+    public static User getUserByid(String uid) {
         Connection con = DataAccess.getConnection();
         String sql = "select * from usr p where p.id=?";
         PreparedStatement pst = null ;
@@ -44,7 +44,7 @@ public class UserDAO {
         return pu;
     }
 
-    public User findUserByUsername(String username) {
+    public static User findUserByUsername(String username) {
         Connection con = DataAccess.getConnection();
         String sql = "select * from User p where p.username=?";
         PreparedStatement pst = null ;
@@ -81,7 +81,7 @@ public class UserDAO {
         return pu;
     }
 
-    public void updateUser(User pu) {
+    public static void updateUser(User pu) {
         Connection con = DataAccess.getConnection();
         String sql = "update usr set user_id=?,user_name=?,user_passwd=?,credit=?,is_super_user=? where id=?";
         PreparedStatement pst = null ;
@@ -91,7 +91,7 @@ public class UserDAO {
             pst.setString(2, pu.getUserName());
             pst.setString(3, pu.getUserPassword());
             pst.setInt(4, pu.getCredit());
-            pst.setBoolean(5, pu.isSuperuser());
+            pst.setBoolean(5, pu.getSuperuser());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

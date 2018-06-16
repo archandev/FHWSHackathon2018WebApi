@@ -84,17 +84,9 @@ public class JobService {
     }
 
     private boolean isSuperUser (String userId) {
-        User user = getUserById(userId);
+        User user = RegisterService.getUserById(userId);
         return user != null && user.getSuperuser();
 
-    }
-
-    private User getUserById (String id) {
-        for (User u : StartService.userCache)
-            if (u.getUserId().equals(id))
-                return u;
-
-        return null;
     }
 
     private void removeJob (String jobId) {

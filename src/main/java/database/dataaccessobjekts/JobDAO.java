@@ -10,9 +10,32 @@ import java.sql.SQLException;
 
 public class JobDAO {
 
-    public Job getJobByid(String jid) {
+    public static void insertJob (Job job) {
         Connection con = DataAccess.getConnection();
-        String sql = "select * from jobs p where p.id=?";
+        String sql = "insert into jobs (job_id, location, time, description, responsible_person, reward, job_name, user_id_fk" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);)";
+        PreparedStatement pst = null;
+
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, job.getJobId());
+            pst.setString(2, job.getLocation());
+            pst.setString(3, job.getDateTime());
+            pst.setString(4, job.getDescription());
+            pst.setString(5, job.getResponsiblePerson());
+            pst.setInt(6, job.getReward());
+            pst.setString(7, job.getName());
+            pst.setString(8, job.getWorker().getUserId());
+
+            pst.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Job getJobByid(String jid) {
+        Connection con = DataAccess.getConnection();
+        String sql = "select * from jobs p where p.job_id=?";
         PreparedStatement pst = null ;
         Job job = null;
         ResultSet rs = null ;
@@ -49,7 +72,7 @@ public class JobDAO {
         return job;
     }
 
-    public void updateJob(Job job) {
+    public static void updateJob(Job job) {
         Connection con = DataAccess.getConnection();
         String sql = "update jobs set job_id=?,location=?,time=?,description=?,responsible_person=?,reward=?,job_name=? where job_id=?";
         PreparedStatement pst = null ;
@@ -60,8 +83,8 @@ public class JobDAO {
             pst.setString(3, job.getDateTime());
             pst.setString(4, job.getDescription());
             pst.setString(5, job.getResponsiblePerson());
-            pst.setInt(5, job.getReward());
-            pst.setString(5, job.getName());
+            pst.setInt(6, job.getReward());
+            pst.setString(7, job.getName());
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -39,6 +39,7 @@ public class Application extends ResourceConfig
 
 		returnValue.add(StartService.class);
 		returnValue.add(JobService.class);
+		returnValue.add(RegisterService.class);
 
 		return returnValue;
 	}
