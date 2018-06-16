@@ -4,12 +4,60 @@ import bean.User;
 import database.utils.DataAccess;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
-    public User getUserByid(String uid) {
+    private static List<User> users = null;
+
+    public static List<User> getAllUsers() {
+        if (users != null){
+            return users;
+        }
+        List<User> userList = new ArrayList<>();
         Connection con = DataAccess.getConnection();
-        String sql = "select * from usr p where p.id=?";
+        String sql = "select * from usr";
+        PreparedStatement pst = null ;
+        User pu = null;
+        ResultSet rs = null ;
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                pu = new User();
+                pu.setUserId(rs.getString("user_id"));
+                pu.setCredit(rs.getInt("credit"));
+                pu.setSuperuser(rs.getBoolean("is_super_user"));
+                pu.setUserName(rs.getString("user_name"));
+                pu.setUserPassword(rs.getString("user_passwd"));
+                userList.add(pu);
+                users.add(pu);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                if(rs!=null){
+                    rs.close();
+                }
+                if(pst!=null){
+                    pst.close();
+                }
+                if(con!=null){
+                    con.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return userList;
+    }
+
+
+    public static User getUserByid(String uid) {
+        Connection con = DataAccess.getConnection();
+        String sql = "select * from usr p where p.user_id=?";
         PreparedStatement pst = null ;
         User pu = null;
         ResultSet rs = null ;
@@ -44,9 +92,9 @@ public class UserDAO {
         return pu;
     }
 
-    public User findUserByUsername(String username) {
+    public static User findUserByUsername(String username) {
         Connection con = DataAccess.getConnection();
-        String sql = "select * from User p where p.username=?";
+        String sql = "select * from usr p where p.user_name=?";
         PreparedStatement pst = null ;
         User pu = null;
         ResultSet rs =  null ;
@@ -81,7 +129,7 @@ public class UserDAO {
         return pu;
     }
 
-    public void updateUser(User pu) {
+    public static void updateUser(User pu) {
         Connection con = DataAccess.getConnection();
         String sql = "update usr set user_id=?,user_name=?,user_passwd=?,credit=?,is_super_user=? where id=?";
         PreparedStatement pst = null ;

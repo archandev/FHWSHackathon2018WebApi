@@ -1,11 +1,7 @@
 package database.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import javax.sql.PooledConnection;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
