@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+
     private static List<User> users = null;
 
     public static void insertUser (User user) {

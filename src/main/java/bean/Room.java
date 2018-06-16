@@ -8,11 +8,12 @@ public class Room {
     private String responsiblePerson;
     private String description;
     private User booker;
+    private int cost;
 
     public Room() {
     }
 
-    public Room(String roomId, String title, int size, String location, String responsiblePerson, String description, User booker) {
+    public Room(String roomId, String title, int size, String location, String responsiblePerson, String description, User booker, int cost) {
         this.roomId = roomId;
         this.title = title;
         this.size = size;
@@ -20,6 +21,7 @@ public class Room {
         this.responsiblePerson = responsiblePerson;
         this.description = description;
         this.booker = booker;
+        this.cost = cost;
     }
 
     public String getRoomId() {
@@ -76,5 +78,13 @@ public class Room {
 
     public void setBooker(User booker) {
         this.booker = booker;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
